@@ -14,9 +14,9 @@ defmodule Fuyu.Message.MTI do
       "0" -> 1987
       "1" -> 1993
       "2" -> 2003
-      reserved when reserved in ["3", "4", "5", "6", "7"] -> :reserved
       "8" -> :national_use
       "9" -> :private_use
+      reserved when reserved in ["3", "4", "5", "6", "7"] -> :reserved
     end
   end
 end
