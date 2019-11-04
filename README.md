@@ -1,6 +1,6 @@
-# Fuyu
+# Fuyu (Fùyù 富裕)
 
-**TODO: Add description**
+ISO 8583 message parsing
 
 ## Installation
 
