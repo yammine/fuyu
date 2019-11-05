@@ -17,16 +17,16 @@ defmodule Fuyu.Message.MTI do
     >> = raw
 
     %__MODULE__{
-      iso_version: iso_version(iso_version),
-      message_class: message_class(message_class, message_origin),
-      message_function: message_function(message_function),
-      message_origin: message_origin(message_origin)
+      iso_version: map_iso_version(iso_version),
+      message_class: map_message_class(message_class, message_origin),
+      message_function: map_message_function(message_function),
+      message_origin: map_message_origin(message_origin)
     }
   end
 
   @version_reserved ~w(3 4 5 6 7)
 
-  defp iso_version(version_byte) do
+  defp map_iso_version(version_byte) do
     case version_byte do
       "0" -> 1987
       "1" -> 1993
@@ -37,13 +37,13 @@ defmodule Fuyu.Message.MTI do
     end
   end
 
-  defp message_class(_class_byte = "4", _origin_byte = "0"), do: :reversal
-  defp message_class(_class_byte = "4", _origin_byte = "1"), do: :reversal
+  defp map_message_class(_class_byte = "4", _origin_byte = "0"), do: :reversal
+  defp map_message_class(_class_byte = "4", _origin_byte = "1"), do: :reversal
 
-  defp message_class(_class_byte = "4", _origin_byte = "2"), do: :chargeback
-  defp message_class(_class_byte = "4", _origin_byte = "3"), do: :chargeback
+  defp map_message_class(_class_byte = "4", _origin_byte = "2"), do: :chargeback
+  defp map_message_class(_class_byte = "4", _origin_byte = "3"), do: :chargeback
 
-  defp message_class(class_byte, _irrelevant_origin_byte) do
+  defp map_message_class(class_byte, _irrelevant_origin_byte) do
     case class_byte do
       "0" -> :reserved
       "1" -> :authorization
@@ -57,7 +57,7 @@ defmodule Fuyu.Message.MTI do
     end
   end
 
-  defp message_function(function_byte) do
+  defp map_message_function(function_byte) do
     case function_byte do
       "0" -> :request
       "1" -> :response
@@ -76,7 +76,7 @@ defmodule Fuyu.Message.MTI do
 
   @origin_reserved ~w(6 7 8 9)
 
-  defp message_origin(origin_byte) do
+  defp map_message_origin(origin_byte) do
     case origin_byte do
       "0" -> :acquirer
       "1" -> :acquirer_repeat
