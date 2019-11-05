@@ -19,9 +19,12 @@ defmodule Fuyu.Message.MTI do
     %__MODULE__{
       iso_version: iso_version(iso_version),
       message_class: message_class(message_class, message_origin),
-      message_function: message_function(message_function)
+      message_function: message_function(message_function),
+      message_origin: message_origin(message_origin)
     }
   end
+
+  @version_reserved ~w(3 4 5 6 7)
 
   defp iso_version(version_byte) do
     case version_byte do
@@ -30,7 +33,7 @@ defmodule Fuyu.Message.MTI do
       "2" -> 2003
       "8" -> :national_use
       "9" -> :private_use
-      version when version in ["3", "4", "5", "6", "7"] -> :reserved
+      version when version in @version_reserved -> :reserved
     end
   end
 
@@ -54,8 +57,8 @@ defmodule Fuyu.Message.MTI do
     end
   end
 
-  defp message_function(message_function_byte) do
-    case message_function_byte do
+  defp message_function(function_byte) do
+    case function_byte do
       "0" -> :request
       "1" -> :response
       "2" -> :advice
@@ -68,6 +71,20 @@ defmodule Fuyu.Message.MTI do
       # Reserved (Some implementations like MasterCard use for positive/negative acknowledgement)
       "8" -> :reserved
       "9" -> :reserved
+    end
+  end
+
+  @origin_reserved ~w(6 7 8 9)
+
+  defp message_origin(origin_byte) do
+    case origin_byte do
+      "0" -> :acquirer
+      "1" -> :acquirer_repeat
+      "2" -> :issuer
+      "3" -> :issuer_repeat
+      "4" -> :other
+      "5" -> :other_repeat
+      origin when origin in @origin_reserved -> :reserved
     end
   end
 end

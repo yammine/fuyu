@@ -211,4 +211,58 @@ defmodule Fuyu.Message.MTITest do
       assert mti.message_function == :reserved
     end
   end
+
+  describe "message_origin" do
+    test "acquirer" do
+      raw = "0000"
+      mti = MTI.new(raw)
+
+      assert mti.message_origin == :acquirer
+    end
+
+    test "acquirer_repeat" do
+      raw = "0001"
+      mti = MTI.new(raw)
+
+      assert mti.message_origin == :acquirer_repeat
+    end
+
+    test "issuer" do
+      raw = "0002"
+      mti = MTI.new(raw)
+
+      assert mti.message_origin == :issuer
+    end
+
+    test "issuer_repeat" do
+      raw = "0003"
+      mti = MTI.new(raw)
+
+      assert mti.message_origin == :issuer_repeat
+    end
+
+    test "other" do
+      raw = "0004"
+      mti = MTI.new(raw)
+
+      assert mti.message_origin == :other
+    end
+
+    test "other_repeat" do
+      raw = "0005"
+      mti = MTI.new(raw)
+
+      assert mti.message_origin == :other_repeat
+    end
+
+    # Reserved origins
+    for origin <- 6..9 do
+      test "reserved origin #{origin}" do
+        raw = "000#{unquote(origin)}"
+        mti = MTI.new(raw)
+
+        assert mti.message_origin == :reserved
+      end
+    end
+  end
 end
