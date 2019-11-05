@@ -22,7 +22,7 @@ defmodule Fuyu.Message.MTI do
       "2" -> 2003
       "8" -> :national_use
       "9" -> :private_use
-      reserved when reserved in ["3", "4", "5", "6", "7"] -> :reserved
+      version when version in ["3", "4", "5", "6", "7"] -> :reserved
     end
   end
 
