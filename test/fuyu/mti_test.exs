@@ -110,5 +110,105 @@ defmodule Fuyu.Message.MTITest do
 
       assert mti.message_class == :chargeback
     end
+
+    test "reconciliation" do
+      raw = "0500"
+      mti = MTI.new(raw)
+
+      assert mti.message_class == :reconciliation
+    end
+
+    test "administrative" do
+      raw = "0600"
+      mti = MTI.new(raw)
+
+      assert mti.message_class == :administrative
+    end
+
+    test "fee_collection" do
+      raw = "0700"
+      mti = MTI.new(raw)
+
+      assert mti.message_class == :fee_collection
+    end
+
+    test "network_management" do
+      raw = "0800"
+      mti = MTI.new(raw)
+
+      assert mti.message_class == :network_management
+    end
+  end
+
+  describe "message_function" do
+    test "request" do
+      raw = "0001"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :request
+    end
+
+    test "response" do
+      raw = "0011"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :response
+    end
+
+    test "advice" do
+      raw = "0021"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :advice
+    end
+
+    test "advice_response" do
+      raw = "0031"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :advice_response
+    end
+
+    test "notification" do
+      raw = "0041"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :notification
+    end
+
+    test "notification_ack" do
+      raw = "0051"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :notification_ack
+    end
+
+    test "instruction" do
+      raw = "0061"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :instruction
+    end
+
+    test "instruction_ack" do
+      raw = "0071"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :instruction_ack
+    end
+
+    test "reserved 8" do
+      raw = "0081"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :reserved
+    end
+
+    test "reserved 9" do
+      raw = "0091"
+      mti = MTI.new(raw)
+
+      assert mti.message_function == :reserved
+    end
   end
 end

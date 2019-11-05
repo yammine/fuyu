@@ -1,17 +1,25 @@
 defmodule Fuyu.Message.MTI do
   defstruct [:iso_version, :message_class, :message_function, :message_origin]
 
+  @type t :: %__MODULE__{
+    iso_version: 1987 | 1993 | 2003 | :reserved | :national_use | :private_use,
+    message_class: Atom.t,
+    message_function: Atom.t,
+    message_origin: Atom.t
+  }
+
   def new(raw) do
     <<
       iso_version::binary-size(1),
       message_class::binary-size(1),
-      _message_function::binary-size(1),
+      message_function::binary-size(1),
       message_origin::binary-size(1),
     >> = raw
 
     %__MODULE__{
       iso_version: iso_version(iso_version),
-      message_class: message_class(message_class, message_origin)
+      message_class: message_class(message_class, message_origin),
+      message_function: message_function(message_function)
     }
   end
 
@@ -43,7 +51,23 @@ defmodule Fuyu.Message.MTI do
       "7" -> :fee_collection
       "8" -> :network_management
       "9" -> :reserved
-      _ -> nil
+    end
+  end
+
+  defp message_function(message_function_byte) do
+    case message_function_byte do
+      "0" -> :request
+      "1" -> :response
+      "2" -> :advice
+      "3" -> :advice_response
+      "4" -> :notification
+      "5" -> :notification_ack
+      # ISO 8583:2003
+      "6" -> :instruction
+      "7" -> :instruction_ack
+      # Reserved (Some implementations like MasterCard use for positive/negative acknowledgement)
+      "8" -> :reserved
+      "9" -> :reserved
     end
   end
 end
