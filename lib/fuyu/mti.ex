@@ -2,18 +2,19 @@ defmodule Fuyu.Message.MTI do
   defstruct [:iso_version, :message_class, :message_function, :message_origin]
 
   @type t :: %__MODULE__{
-    iso_version: 1987 | 1993 | 2003 | :reserved | :national_use | :private_use,
-    message_class: Atom.t,
-    message_function: Atom.t,
-    message_origin: Atom.t
-  }
+          iso_version: 1987 | 1993 | 2003 | :reserved | :national_use | :private_use,
+          message_class: Atom.t(),
+          message_function: Atom.t(),
+          message_origin: Atom.t()
+        }
 
+  @spec new(binary) :: t
   def new(raw) do
     <<
       iso_version::binary-size(1),
       message_class::binary-size(1),
       message_function::binary-size(1),
-      message_origin::binary-size(1),
+      message_origin::binary-size(1)
     >> = raw
 
     %__MODULE__{
